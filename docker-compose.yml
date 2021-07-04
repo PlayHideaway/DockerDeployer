@@ -1,0 +1,23 @@
+version: "3.7"
+
+services: 
+    webhook:
+        build: ./
+        image: webhook
+        container_name: webhook
+        networks: 
+            - caddy
+        restart: unless-stopped
+        labels:
+            caddy: ${DOMAIN}
+            caddy.tls: ${EMAIL}
+            caddy.reverse_proxy: "{{upstreams 8080}}"
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "1m"
+        tty: true
+
+networks: 
+    caddy:
+        external: true
