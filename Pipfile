@@ -1,0 +1,21 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+requests = "*"
+
+[packages]
+fastapi = "*"
+uvicorn = {extras = ["standard"], version = "*"}
+fastapi-responses = "*"
+python-dotenv = "*"
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+test = "pytest src/test.py -s --capture=sys"
+dev = "uvicorn src/main:app --reload"
