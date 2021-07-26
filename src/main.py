@@ -1,14 +1,25 @@
-from aiohttp import web
+from os import environ
+import os
+from fastapi import FastAPI, Body, Request, Depends
+import json
+from fastapi.exceptions import HTTPException
 
-async def handle(request):
-    name = request.match_info.get('name', "Anonymous")
-    text = "Hello, " + name
-    return web.Response(text=text)
+from fastapi.param_functions import Header
+from fastapi_responses import custom_openapi
+from auth import auth_hook, auth_web, check_ref
 
-app = web.Application()
-app.add_routes([web.get('/', handle),
-                web.get('/{name}', handle)])
 
-if __name__ == '__main__':
-    print("Starting")
-    web.run_app(app)
+if not os.environ.get("DOCKER"):
+    from dotenv import load_dotenv
+    load_dotenv
+    
+app = FastAPI()
+
+app.openapi = custom_openapi(app)
+
+@app.get("/", dependencies=[Depends(auth_web)])
+@app.post("/", dependencies=[Depends(auth_hook), Depends(check_ref)])
+async def hook(req: Request):
+    return "Update"
+
+
