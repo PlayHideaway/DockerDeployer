@@ -1,6 +1,6 @@
 # Github Web Hook
 
-Example of how to use Github weeb hooks using Fastapi
+Example of how to use Github web hooks using Fastapi
 
 ```pipenv sync```
 
@@ -8,5 +8,8 @@ Example of how to use Github weeb hooks using Fastapi
 
 ```cp .env.sample .env```
 
+```pipenv run dev```
+
+```docker-compose up --build```
 
 
