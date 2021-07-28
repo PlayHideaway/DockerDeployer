@@ -11,11 +11,10 @@ requests = "*"
 fastapi = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 fastapi-responses = "*"
-python-dotenv = "*"
 
 [requires]
 python_version = "3.8"
 
 [scripts]
-test = "pytest src/test.py -s --capture=sys"
-dev = "uvicorn src/main:app --reload"
+test = "pytest app/test/test.py -s --capture=sys"
+dev = "uvicorn app.main:app --reload"
