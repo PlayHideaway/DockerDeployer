@@ -1,11 +1,11 @@
-FROM python:slim
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
+
 
 ENV DOCKER=1
 
-RUN pip install aiohttp
+RUN pip install fastapi-responses
 
 
-COPY src /src
+COPY ./app /app/app
 
-CMD [ "python", "/src/main.py"]
 
