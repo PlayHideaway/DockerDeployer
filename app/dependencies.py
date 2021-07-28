@@ -1,17 +1,13 @@
-import os
+from os import getenv
 import hmac
 from fastapi import Request
 from fastapi.exceptions import HTTPException
-from fastapi.param_functions import Header
-from dotenv import load_dotenv
-
-load_dotenv()
 
 async def check_ref(request: Request):
     json = await request.json()  
-    if json["ref"] and json["ref"] == f"refs/heads/{os.environ.get('BRANCH')}":
+    if json["ref"] and json["ref"] == f"refs/heads/{getenv('BRANCH')}":
         return
-    raise HTTPException(status_code=403, detail="Invalid branch")
+    raise HTTPException(status_code=202, detail="Invalid branch")
 
 async def auth_hook(request: Request):
     try:
@@ -29,7 +25,7 @@ async def auth_hook(request: Request):
     if sha_name != 'sha1':
         raise HTTPException(status_code=400, detail="Invalid signature")
 
-    secret_key = os.environ.get('WEBHOOK_SECRET')
+    secret_key = getenv('WEBHOOK_SECRET')
     if secret_key is None:
         raise HTTPException(status_code=503, detail="Missing WEBHOOK_SECRET")
 
@@ -42,9 +38,8 @@ async def auth_hook(request: Request):
 
 async def auth_web(request: Request):
     token = request._query_params.get("token")
-    if token is None:
+    if token is None or token is "":
         raise HTTPException(status_code=400, detail="Missing token")
-    print(token, os.environ.get("TOKEN"))
-    if token == os.environ.get("TOKEN"):
+    if token == getenv("TOKEN"):
         return
     raise HTTPException(status_code=403, detail="Invalid token")

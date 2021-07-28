@@ -2,17 +2,15 @@ from fastapi import FastAPI, Request, Depends
 
 from fastapi.testclient import TestClient
 import hmac
-
-from starlette.routing import request_response
-from main import app
-from auth import auth_hook, auth_web, check_ref
-from os import environ
+from app.main import app
+from app.dependencies import auth_hook, auth_web, check_ref
+from os import environ, getenv
 import json
 
 environ['WEBHOOK_SECRET'] = "dfsgdsjghhgdaehlsdfjhjkdh"
 environ["BRANCH"] = "master"
 environ["TOKEN"] = "assdcvfgvh"
-secret_key = environ.get('WEBHOOK_SECRET')
+secret_key = getenv('WEBHOOK_SECRET')
 
 client = TestClient(app)
 
@@ -56,14 +54,14 @@ def test_auth():
 def test_branch():
     payload = {"ref": "refs/heads/master"}
     response = client.post("/test_ref", json= payload)
-    assert response.status_code == 200
+    assert response.status_code == 202
 
     payload = {"ref": "refs/heads/test"}
     response = client.post("/test_ref", json= payload)
     assert response.status_code == 403
 
 def test_web():
-    response = client.get('/test_web?token={}'.format(environ.get("TOKEN")))
+    response = client.get('/test_web?token={}'.format(getenv("TOKEN")))
     assert response.status_code == 200
 
     response = client.get('/test_web')
