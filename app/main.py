@@ -7,8 +7,9 @@ app = FastAPI()
 app.openapi = custom_openapi(app)
 
 @app.get("/", dependencies=[Depends(auth_web)])
-@app.post("/", dependencies=[Depends(auth_hook), Depends(check_ref)])
+@app.post("/", dependencies=[Depends(auth_hook)])
 async def hook(req: Request):
+    print("Update")
     return "Update"
 
 
