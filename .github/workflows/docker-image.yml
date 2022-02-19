@@ -43,3 +43,4 @@ jobs:
         webhook_type: 'form-urlencoded'
         webhook_url: ${{ secrets.WEBHOOK_URL }}
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
+        data: '{ "ref": ${{ GITHUB_REF }}}
