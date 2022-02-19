@@ -3,13 +3,6 @@ import hmac
 from fastapi import Request
 from fastapi.exceptions import HTTPException
 
-async def check_ref(request: Request):
-    json = await request.json()  
-    if json["ref"] and json["ref"] == f"refs/heads/{getenv('BRANCH')}":
-        print(json["ref"])
-        return
-    raise HTTPException(status_code=202, detail="Invalid branch")
-
 async def auth_hook(request: Request):
     try:
         #json = await request.json()
