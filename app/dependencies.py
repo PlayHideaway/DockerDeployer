@@ -13,7 +13,9 @@ async def check_ref(request: Request):
 async def auth_hook(request: Request):
     try:
         json = await request.json()
+        print(json)
         text = await request.body()
+        print(text)
     except:
         raise HTTPException(status_code=204, detail="Missing or bad content")
     header_signature = request.headers.get('X-Hub-Signature')
