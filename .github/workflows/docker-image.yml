@@ -36,3 +36,10 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+        
+    - name: Invoke deployment hook
+      uses: distributhor/workflow-webhook@v2
+      env:
+        webhook_type: 'form-urlencoded'
+        webhook_url: ${{ secrets.WEBHOOK_URL }}
+        webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
