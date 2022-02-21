@@ -17,6 +17,10 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
       
+    tags: |
+      jimmy1248/dockerdeployer:latest
+      type=semver,pattern={{major}}.{{minor}}
+
     - name: Log in to Docker Hub
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
       with:
@@ -34,9 +38,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: |
-          jimmy1248/dockerdeployer:latest 
-          ${{ steps.meta.outputs.tags }}
+        tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         
     - name: Invoke deployment hook
