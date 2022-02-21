@@ -34,9 +34,9 @@ jobs:
       with:
         context: .
         push: true
-        tags: 
-          - jimmy1248/dockerdeployer:latest 
-          - ${{ steps.meta.outputs.tags }}
+        tags: |
+          jimmy1248/dockerdeployer:latest 
+          ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         
     - name: Invoke deployment hook
