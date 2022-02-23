@@ -3,7 +3,7 @@ from fastapi import FastAPI, Request, Depends
 from fastapi.testclient import TestClient
 import hmac
 from app.main import app
-from app.dependencies import auth_hook, auth_web, check_ref
+from app.dependencies import auth_hook, auth_web
 from os import environ, getenv
 import json
 
@@ -15,10 +15,6 @@ secret_key = getenv('WEBHOOK_SECRET')
 client = TestClient(app)
 
 @app.post("/test_auth", dependencies=[Depends(auth_hook)])
-async def auth_test_handler(request: Request):
-    return 200
-
-@app.post("/test_ref", dependencies=[Depends(check_ref)])
 async def auth_test_handler(request: Request):
     return 200
 
@@ -51,14 +47,14 @@ def test_auth():
     assert response.text == '{"detail":"Unauthorized"}'
    
 
-def test_branch():
-    payload = {"ref": "refs/heads/master"}
-    response = client.post("/test_ref", json= payload)
-    assert response.status_code == 202
+# def test_branch():
+#     payload = {"ref": "refs/heads/master"}
+#     response = client.post("/test_ref", json= payload)
+#     assert response.status_code == 202
 
-    payload = {"ref": "refs/heads/test"}
-    response = client.post("/test_ref", json= payload)
-    assert response.status_code == 403
+#     payload = {"ref": "refs/heads/test"}
+#     response = client.post("/test_ref", json= payload)
+#     assert response.status_code == 403
 
 def test_web():
     response = client.get('/test_web?token={}'.format(getenv("TOKEN")))
