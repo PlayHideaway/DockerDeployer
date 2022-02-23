@@ -5,14 +5,13 @@ from fastapi.exceptions import HTTPException
 
 async def auth_hook(request: Request):
     try:
-        #json = await request.json()
-        #print(json)
         text = await request.body()
-        print(text)
+        json = await request.json()
+
     except:
         raise HTTPException(status_code=204, detail="Missing or bad content")
+    
     header_signature = request.headers.get('X-Hub-Signature')
-
     if not header_signature:
         raise HTTPException(status_code=400, detail="Missing signature")
 
@@ -34,7 +33,7 @@ async def auth_hook(request: Request):
 
 async def auth_web(request: Request):
     token = request._query_params.get("token")
-    if token is None or token is "":
+    if token == None or token == "":
         raise HTTPException(status_code=400, detail="Missing token")
     if token == getenv("TOKEN"):
         return
