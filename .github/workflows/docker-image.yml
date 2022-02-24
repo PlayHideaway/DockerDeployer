@@ -36,13 +36,14 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=sha
+            jimmy1248/dockerdeployer:latest
       
     - name: Build and push Docker image
       uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
       with:
         context: .
         push: true
-        tags: jimmy1248/dockerdeployer:latest 
+        tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         
     - name: Invoke deployment hook
