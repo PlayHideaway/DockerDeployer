@@ -29,12 +29,6 @@ jobs:
       with:
         images: jimmy1248/dockerdeployer
         tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
             type=sha
             latest
       
